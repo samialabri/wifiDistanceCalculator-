@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="wifiDistanceCalculator-:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/wifiDistanceCalculator__jar</output-path>
+    <root id="archive" name="wifiDistanceCalculator-.jar">
+      <element id="module-output" name="wifiDistanceCalculator-" />
+    </root>
+  </artifact>
+</component>
