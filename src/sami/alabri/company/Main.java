@@ -21,7 +21,7 @@ public class Main {
     private static boolean isCalibrated;
     private static client clnt;
     private static int identity;
-
+    private static boolean repeat = false;
 
 
     public static void main(String[] args) {
@@ -61,9 +61,13 @@ public class Main {
                 sc.nextLine();
             }
             findDistance();
-
-            System.out.println("Do you want to repeat? if yes press anything other wise CTRL + C");
-            sc.nextLine();
+            if(!repeat){
+            System.out.println("Do you want to repeat? if yes press  y otherwise CTRL + C");
+            String isrepeat = sc.nextLine();
+            if(isrepeat.equals("y") || isrepeat.equals("Y")){
+                repeat = true;
+            }
+            }
             System.out.println("Do you want to repeat calibration? y for yes, anything else for no");
             String calibrationYesOrNo = sc.nextLine();
             if(calibrationYesOrNo.equals("Y") || calibrationYesOrNo.equals("y")){
