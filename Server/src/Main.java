@@ -1,7 +1,13 @@
+import java.util.Scanner;
+
 public class Main {
-    private static Server server;
+
+
     public static void main(String[] args) {
+
+
+
         // write your code here
-        server = new Server();
+        Server server = new Server();
     }
 }
