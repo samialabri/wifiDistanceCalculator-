@@ -29,9 +29,14 @@ public class Main {
 
 
 
-        System.out.println("This Program will try to calculate the Distance from a WiFi station using the Signal Strength,");
-        System.out.println("and the frequency of the WiFi, it depends on the aircrack-ng software suite, if you haven't   ,");
+        System.out.println("This Program will calculate the Distance from a WiFi station using the Signal Strength,        ");
+        System.out.println("and the frequency of the WiFi, it depends on the aircrack-ng software suite, if you haven't,   ");
         System.out.println("installed it yet please quit this program and install it 'sudo apt install aircrack-ng'        ");
+        System.out.println("then start by configuring the wifi interface to be in promiscuous mode by typing:              ");
+        System.out.println("$sudo airmon-ng start wlan1                                                                    ");
+        System.out.println("if the interface is wlan1, then start monitoring the wifi devices by typing:                   ");
+        System.out.println("$sudo airodump-ng -w b --output-format csv wlan1mon                                            ");
+        System.out.println("if this is the first time the file name b is used, the output file will be b-01.csv            ");
 
         System.out.println("enter the ip address of the server: ");
         serverIpAdress = sc.nextLine();
@@ -48,15 +53,14 @@ public class Main {
         while(true) {
 
             if(!isCalibrated) {
-                System.out.println("place the device 1m from the station, press enter once you've done");
-                sc.nextLine();
-
+                System.out.println("enter the distance of the device from the station in meters ");
+                int distanceFromDeviceInMeters = sc.nextInt();
 
                 System.out.println("now the wifi equation to calculate the distance will be calibrated ");
 
-                calibration();
+                calibration(distanceFromDeviceInMeters);
 
-                System.out.println("now put the device away and lets calulcate the distance, press enter once you are ready ");
+                System.out.println("now put the device away and lets calculate the distance, press enter once you are ready ");
                 isCalibrated = true;
                 sc.nextLine();
             }
@@ -93,7 +97,7 @@ public class Main {
         clnt.sendData(Double.toString(length));
     }
 
-    private static void calibration(){
+    private static void calibration(int distance){
 
 
         for (int i = 0; i < 12; i++) {
@@ -112,7 +116,7 @@ public class Main {
 
         double avg = calculateAverage();
         System.out.println(avg);
-        constant = calculateConstant(1,avg,2412.0);
+        constant = calculateConstant(distance,avg,2412.0);
         System.out.println(constant);
 
         signalLevelValues.clear();

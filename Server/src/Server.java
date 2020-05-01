@@ -14,11 +14,11 @@ import java.util.Scanner;
 
 
 public class Server {
-
+    //the distance coming from each station
     public static String dataFromStation1;
     public static String dataFromStation2;
     public static String dataFromStation3;
-
+    //the calculated coordinates of the target device
     public static double DeviceXCoordinate;
     public static double DeviceYCoordinate;
 
@@ -26,12 +26,12 @@ public class Server {
 
 
     public Server() {
-
+        //taking input from the user about the dimensions of the room
         System.out.println("insert the x dimension of the room ");
         int roomXDimension = sc.nextInt();
         System.out.println("insert the y dimension of the room ");
         int roomYDimension = sc.nextInt();
-
+        //taking input from the user about the location of each station in the roam
         System.out.println("insert the x coordinate of the first station: ");
         int device1XCoordinate = sc.nextInt();
         System.out.println("insert the y coordinate of the first station: ");
@@ -47,6 +47,7 @@ public class Server {
         System.out.println("insert the y coordinate of the third station: ");
         int device3YCoordinate = sc.nextInt();
 
+        //opening and configuring a tcp socket to listen for the stations
         ServerSocket server = null;
         try {
             server = new ServerSocket(5000);
@@ -54,7 +55,8 @@ public class Server {
         } catch (IOException exception) {
             System.out.println("couldn't start the server");
         }
-
+        //waiting for a connection from each station, and starting a thread to listen to multiple stations at the same
+        //time, (multi-threaded server)
         while (true) {
             try {
 
@@ -68,14 +70,6 @@ public class Server {
                 Thread t = new ClientHandler(socket, in);
                 t.start();
 
-            /*try{
-                data = in.readUTF();
-                System.out.println(data);
-                socket.close();
-            }
-            catch (IOException exception){
-                System.out.println(exception.toString());
-            }*/
             } catch (Exception exception) {
                 System.out.println(exception.toString());
             }
