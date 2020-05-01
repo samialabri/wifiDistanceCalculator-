@@ -22,30 +22,31 @@ public class Server {
     public static double DeviceXCoordinate;
     public static double DeviceYCoordinate;
 
+    public int roomXDimension;
+    public int roomYDimension;
+
+    public int station1XCoordinate;
+    public int station1YCoordinate;
+
+    public int station2XCoordinate;
+    public int station2YCoordinate;
+
+    public int station3XCoordinate;
+    public int station3YCoordinate;
+
     private static final Scanner sc = new Scanner(System.in);
 
 
-    public Server() {
-        //taking input from the user about the dimensions of the room
-        System.out.println("insert the x dimension of the room ");
-        int roomXDimension = sc.nextInt();
-        System.out.println("insert the y dimension of the room ");
-        int roomYDimension = sc.nextInt();
-        //taking input from the user about the location of each station in the roam
-        System.out.println("insert the x coordinate of the first station: ");
-        int device1XCoordinate = sc.nextInt();
-        System.out.println("insert the y coordinate of the first station: ");
-        int device1YCoordinate = sc.nextInt();
+    public Server(int xroom,int yroom,int xstation1,int ystation1,int xstation2, int ystation2,int xstation3,int ystation3) {
+        roomXDimension = xroom;
+        roomYDimension = yroom;
+        station1XCoordinate = xstation1;
+        station1YCoordinate = ystation1;
+        station2XCoordinate = xstation2;
+        station2YCoordinate = ystation2;
+        station3XCoordinate = xstation3;
+        station3YCoordinate = ystation3;
 
-        System.out.println("insert the x coordinate of the second station: ");
-        int device2XCoordinate = sc.nextInt();
-        System.out.println("insert the y coordinate of the second station: ");
-        int device2YCoordinate = sc.nextInt();
-
-        System.out.println("insert the x coordinate of the third station: ");
-        int device3XCoordinate = sc.nextInt();
-        System.out.println("insert the y coordinate of the third station: ");
-        int device3YCoordinate = sc.nextInt();
 
         //opening and configuring a tcp socket to listen for the stations
         ServerSocket server = null;
@@ -74,8 +75,8 @@ public class Server {
                 System.out.println(exception.toString());
             }
         }
-    }
-}
+    }}
+
 
 
 class ClientHandler extends Thread
