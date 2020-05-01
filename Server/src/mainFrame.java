@@ -32,6 +32,8 @@ public class mainFrame {
     protected static Server server;
     public mainFrame() {
 
+        JFrame Xyplane = new JFrame("x y plane");
+
 
         startServerButton.addActionListener(new ActionListener() {
             @Override
@@ -47,6 +49,13 @@ public class mainFrame {
 
                 Thread t = new ServerHandler(xroom,yroom,xstation1,ystation1,xstation2,ystation2,xstation3,ystation3);
                 t.start();
+
+                Xyplane.setContentPane(new CustomDrawingPanel(xroom,yroom,xstation1,ystation1,xstation2,ystation2,xstation3,ystation3));
+                Xyplane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                Xyplane.setSize(1000,1000);
+                Xyplane.setResizable(false);
+                Xyplane.pack();
+                Xyplane.setVisible(true);
             }
         });
 
