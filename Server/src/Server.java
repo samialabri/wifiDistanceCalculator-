@@ -22,22 +22,22 @@ public class Server {
     public static double DeviceXCoordinate;
     public static double DeviceYCoordinate;
 
-    public int roomXDimension;
-    public int roomYDimension;
+    public double roomXDimension;
+    public double roomYDimension;
 
-    public int station1XCoordinate;
-    public int station1YCoordinate;
+    public double station1XCoordinate;
+    public double station1YCoordinate;
 
-    public int station2XCoordinate;
-    public int station2YCoordinate;
+    public double station2XCoordinate;
+    public double station2YCoordinate;
 
-    public int station3XCoordinate;
-    public int station3YCoordinate;
+    public double station3XCoordinate;
+    public double station3YCoordinate;
 
     private static final Scanner sc = new Scanner(System.in);
 
 
-    public Server(int xroom,int yroom,int xstation1,int ystation1,int xstation2, int ystation2,int xstation3,int ystation3) {
+    public Server(double xroom,double yroom,double xstation1,double ystation1,double xstation2, double ystation2,double xstation3,double ystation3) {
         roomXDimension = xroom;
         roomYDimension = yroom;
         station1XCoordinate = xstation1;

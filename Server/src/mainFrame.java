@@ -1,3 +1,5 @@
+import com.mysql.jdbc.exceptions.MySQLDataException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -5,12 +7,10 @@ import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class mainFrame {
+
     public JPanel panel1;
     private JButton startServerButton;
     private JTextField xCoordinateStation1TextField;
@@ -29,7 +29,11 @@ public class mainFrame {
     private JLabel roomXDimensionLabel;
     private JTextField roomYDimensionTextField;
     private JLabel roomYDimensionLabel;
+    private JButton reFreshButton;
     protected static Server server;
+    protected CustomDrawingPanel customDrawingPanel;
+    private double xPhone = 2;
+    private double yPhone = 2;
     public mainFrame() {
 
         JFrame Xyplane = new JFrame("x y plane");
@@ -38,27 +42,60 @@ public class mainFrame {
         startServerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int xroom = Integer.parseInt(roomXDimensionTextField.getText());
-                int yroom = Integer.parseInt(roomYDimensionTextField.getText());
-                int xstation1 = Integer.parseInt(xCoordinateStation1TextField.getText());
-                int ystation1 = Integer.parseInt(yCoordinateStation1TextField.getText());
-                int xstation2 = Integer.parseInt(xCoordinateStation2TextField.getText());
-                int ystation2 = Integer.parseInt(yCoordinateStation2TextField.getText());
-                int xstation3 = Integer.parseInt(xCoordinateStation3TextField.getText());
-                int ystation3 = Integer.parseInt(yCoordinateStation3TextField.getText());
+                double xroom = Double.parseDouble(roomXDimensionTextField.getText());
+                double yroom = Double.parseDouble(roomYDimensionTextField.getText());
+                double xstation1 = Double.parseDouble(xCoordinateStation1TextField.getText());
+                double ystation1 = Double.parseDouble(yCoordinateStation1TextField.getText());
+                double xstation2 = Double.parseDouble(xCoordinateStation2TextField.getText());
+                double ystation2 = Double.parseDouble(yCoordinateStation2TextField.getText());
+                double xstation3 = Double.parseDouble(xCoordinateStation3TextField.getText());
+                double ystation3 = Double.parseDouble(yCoordinateStation3TextField.getText());
 
+                customDrawingPanel =  new CustomDrawingPanel(xroom,yroom,xstation1,ystation1,xstation2,ystation2,xstation3,ystation3);
+                Xyplane.setContentPane(customDrawingPanel);
+                Xyplane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                Xyplane.setResizable(false);
+                Xyplane.pack();
+                //Xyplane.setSize((int)xroom*100+10,(int)yroom*100+10);
+                Xyplane.setVisible(true);
                 Thread t = new ServerHandler(xroom,yroom,xstation1,ystation1,xstation2,ystation2,xstation3,ystation3);
                 t.start();
 
-                Xyplane.setContentPane(new CustomDrawingPanel(xroom,yroom,xstation1,ystation1,xstation2,ystation2,xstation3,ystation3));
-                Xyplane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                Xyplane.setSize(1000,1000);
-                Xyplane.setResizable(false);
-                Xyplane.pack();
-                Xyplane.setVisible(true);
+
+
+
             }
         });
 
+        reFreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fetchDeviceLocation();
+                customDrawingPanel.setXPhone(xPhone);
+                customDrawingPanel.setYPhone(yPhone);
+            }
+        });
+    }
+
+    private void fetchDeviceLocation(){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.100.53:3306/wifi", "wifiuser", "sa");
+            Statement statement = connection.createStatement();
+            String selectStatement = "SELECT * FROM `intries`";
+            ResultSet rs = statement.executeQuery(selectStatement);
+            //statement.executeUpdate(insertStatement);
+
+
+            rs.last();
+            xPhone = (double) rs.getInt("x");
+            yPhone = (double) rs.getInt("y");
+            connection.close();
+
+        }
+        catch (SQLException | ClassNotFoundException sqlException){
+            System.out.println(sqlException.toString());
+        }
     }
 }
 
@@ -67,17 +104,17 @@ public class mainFrame {
 class ServerHandler extends Thread
 {
 
-    int xRoom;
-    int yRoom;
-    int xStation1;
-    int yStation1;
-    int xStation2;
-    int yStation2;
-    int xStation3;
-    int yStation3;
+    double xRoom;
+    double yRoom;
+    double xStation1;
+    double yStation1;
+    double xStation2;
+    double yStation2;
+    double xStation3;
+    double yStation3;
 
     // Constructor
-    public ServerHandler(int xroom,int yroom,int xstation1,int ystation1,int xstation2, int ystation2,int xstation3,int ystation3)
+    public ServerHandler(double xroom,double yroom,double xstation1,double ystation1,double xstation2, double ystation2,double xstation3,double ystation3)
     {
         xRoom = xroom;
         yRoom = yroom;
@@ -92,10 +129,9 @@ class ServerHandler extends Thread
     @Override
     public void run()
     {
-
         mainFrame.server = new Server(xRoom,yRoom,xStation1,yStation1,xStation2,yStation2,xStation3,yStation3);
     }
 
-
 }
+
 
