@@ -48,6 +48,17 @@ public class Server {
         station3YCoordinate = ystation3;
 
 
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection= DriverManager.getConnection("jdbc:mysql://192.168.100.59:3306/wifi","wifiuser","sa");
+            Statement statement = connection.createStatement();
+            String insertStatement = "INSERT INTO `stations` (`id`, `x1`, `y1`, `x2`, `y2`, `x3`, `y3`) VALUES (NULL,"+Double.toString(station1XCoordinate)+","+ Double.toString(station1YCoordinate)+","+Double.toString(station2XCoordinate)+"," + Double.toString(station2YCoordinate) +","+Double.toString(station3XCoordinate)+","+Double.toString(station3YCoordinate)+")";
+            statement.executeUpdate(insertStatement);
+            connection.close();
+
+        }catch (SQLException | ClassNotFoundException sqlException){
+            System.out.println(sqlException.toString());
+        }
         //opening and configuring a tcp socket to listen for the stations
         ServerSocket server = null;
         try {
@@ -110,9 +121,9 @@ class ClientHandler extends Thread
             findCoordinates();
             try{
                 Class.forName("com.mysql.jdbc.Driver");
-                Connection connection= DriverManager.getConnection("jdbc:mysql://192.168.100.53:3306/wifi","wifiuser","sa");
+                Connection connection= DriverManager.getConnection("jdbc:mysql://192.168.100.59:3306/wifi","wifiuser","sa");
                 Statement statement = connection.createStatement();
-                String insertStatement = "INSERT INTO `intries` (`time_stamp`, `mac`, `x`, `y`) VALUES (current_timestamp(), '00:00:00:00:00', "+Double.toString(Server.DeviceXCoordinate)+", " + Double.toString(Server.DeviceYCoordinate) +")";
+                String insertStatement = "INSERT INTO `entries` (`time_stamp`, `mac`, `x`, `y`) VALUES (current_timestamp(), '00:00:00:00:00:00', "+Double.toString(Server.DeviceXCoordinate)+", " + Double.toString(Server.DeviceYCoordinate) +")";
                 statement.executeUpdate(insertStatement);
                 connection.close();
 

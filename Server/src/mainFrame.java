@@ -80,9 +80,9 @@ public class mainFrame {
     private void fetchDeviceLocation(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.100.53:3306/wifi", "wifiuser", "sa");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.100.59:3306/wifi", "wifiuser", "sa");
             Statement statement = connection.createStatement();
-            String selectStatement = "SELECT * FROM `intries`";
+            String selectStatement = "SELECT * FROM `entries`";
             ResultSet rs = statement.executeQuery(selectStatement);
             //statement.executeUpdate(insertStatement);
 
