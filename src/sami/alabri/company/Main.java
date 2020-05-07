@@ -54,7 +54,7 @@ public class Main {
 
             if(!isCalibrated) {
                 System.out.println("enter the distance of the device from the station in meters ");
-                int distanceFromDeviceInMeters = sc.nextInt();
+                double distanceFromDeviceInMeters = sc.nextDouble();
 
                 System.out.println("now the wifi equation to calculate the distance will be calibrated ");
 
@@ -97,7 +97,7 @@ public class Main {
         clnt.sendData(Double.toString(length));
     }
 
-    private static void calibration(int distance){
+    private static void calibration(double distance){
 
 
         for (int i = 0; i < 12; i++) {

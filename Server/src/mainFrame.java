@@ -54,7 +54,7 @@ public class mainFrame {
                 customDrawingPanel =  new CustomDrawingPanel(xroom,yroom,xstation1,ystation1,xstation2,ystation2,xstation3,ystation3);
                 Xyplane.setContentPane(customDrawingPanel);
                 Xyplane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                Xyplane.setResizable(false);
+                Xyplane.setResizable(true);
                 Xyplane.pack();
                 //Xyplane.setSize((int)xroom*100+10,(int)yroom*100+10);
                 Xyplane.setVisible(true);

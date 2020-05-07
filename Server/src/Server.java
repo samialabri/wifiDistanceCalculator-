@@ -15,9 +15,9 @@ import java.util.Scanner;
 
 public class Server {
     //the distance coming from each station
-    public static String dataFromStation1;
-    public static String dataFromStation2;
-    public static String dataFromStation3;
+    public static String dataFromStation1 ="1";
+    public static String dataFromStation2 = "1";
+    public static String dataFromStation3 = "1";
     //the calculated coordinates of the target device
     public static double DeviceXCoordinate;
     public static double DeviceYCoordinate;
@@ -25,14 +25,14 @@ public class Server {
     public double roomXDimension;
     public double roomYDimension;
 
-    public double station1XCoordinate;
-    public double station1YCoordinate;
+    public static double station1XCoordinate;
+    public static double station1YCoordinate;
 
-    public double station2XCoordinate;
-    public double station2YCoordinate;
+    public static double station2XCoordinate;
+    public static double station2YCoordinate;
 
-    public double station3XCoordinate;
-    public double station3YCoordinate;
+    public static double station3XCoordinate;
+    public static double station3YCoordinate;
 
     private static final Scanner sc = new Scanner(System.in);
 
@@ -85,10 +85,10 @@ class ClientHandler extends Thread
     final DataInputStream dis;
     final Socket s;
 
-
     // Constructor
     public ClientHandler(Socket s, DataInputStream dis)
     {
+
         this.s = s;
         this.dis = dis;
     }
@@ -137,7 +137,13 @@ class ClientHandler extends Thread
     }
 
     private void findCoordinates(){
-        Server.DeviceXCoordinate = 1;
-        Server.DeviceYCoordinate = 2;
+
+        Point p1 = new Point(Server.station1XCoordinate, Server.station1YCoordinate, Double.parseDouble(Server.dataFromStation1));
+        Point p2 = new Point(Server.station2XCoordinate, Server.station2YCoordinate, Double.parseDouble(Server.dataFromStation2));
+        Point p3 = new Point(Server.station3XCoordinate, Server.station3YCoordinate, Double.parseDouble(Server.dataFromStation3));
+        double[] a=Trilateration.Compute(p1, p2, p3);
+
+        Server.DeviceXCoordinate = a[0];
+        Server.DeviceYCoordinate = a[1];
     }
 }

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class CustomDrawingPanel extends JPanel {
 
@@ -60,7 +61,9 @@ public class CustomDrawingPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g){
         try {
-            raspberryPiImage = ImageIO.read(new File("./Server/assets/RaspbberryPiIcon.png"));
+            URL imageURL = ClassLoader.getSystemResource("RaspbberryPiIcon.png");
+            raspberryPiImage = ImageIO.read(imageURL);
+            //raspberryPiImage = ImageIO.read(new File("./Server/assets/RaspbberryPiIcon.png"));
             phoneImage = ImageIO.read(new File("./Server/assets/phone.png"));
             sizedImage = raspberryPiImage.getScaledInstance(50,100,Image.SCALE_DEFAULT);
             phoneSizedImage = phoneImage.getScaledInstance(50,100,Image.SCALE_DEFAULT);
@@ -69,7 +72,7 @@ public class CustomDrawingPanel extends JPanel {
         }
         super.paintComponent(g);
         Graphics2D graphics2D = (Graphics2D)g;
-        graphics2D.setStroke(new BasicStroke(10));
+        graphics2D.setStroke(new BasicStroke(5));
         graphics2D.drawLine(10,10,10,(int)yRoomDimension-10);
         graphics2D.drawLine(10,(int)yRoomDimension-10,(int)xRoomDimension-10,(int)yRoomDimension-10);
 
@@ -84,7 +87,7 @@ public class CustomDrawingPanel extends JPanel {
         graphics2D.drawString("S3 (" +Double.toString(xStation3/scale) +"," + Double.toString(yStation3/scale) +")",(int)xStation3-stationHalfSize,(int)yStation3-stationHalfSize);
 
         graphics2D.drawImage(phoneSizedImage,(int)xPhone-stationHalfSize,(int)yPhone-stationHalfSize,null);
-
+        graphics2D.drawString("Phone (" +Double.toString(xPhone/scale) +"," + Double.toString(yPhone/scale) +")",(int)xPhone-stationHalfSize,(int)yPhone-stationHalfSize);
         //graphics2D.drawRect(xStation1-stationHalfSize,yStation1-stationHalfSize,stationHalfSize*2,stationHalfSize*2);
     }
 }
