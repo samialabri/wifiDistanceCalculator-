@@ -3,7 +3,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+import Jama.Matrix;
 //mysql imports
 
 import java.sql.Connection;
@@ -148,13 +148,29 @@ class ClientHandler extends Thread
     }
 
     private void findCoordinates(){
-
-        Point p1 = new Point(Server.station1XCoordinate, Server.station1YCoordinate, Double.parseDouble(Server.dataFromStation1));
-        Point p2 = new Point(Server.station2XCoordinate, Server.station2YCoordinate, Double.parseDouble(Server.dataFromStation2));
-        Point p3 = new Point(Server.station3XCoordinate, Server.station3YCoordinate, Double.parseDouble(Server.dataFromStation3));
-        double[] a=Trilateration.Compute(p1, p2, p3);
-
-        Server.DeviceXCoordinate = a[0];
-        Server.DeviceYCoordinate = a[1];
+        double cor[]=getLoc(Server.station1XCoordinate,Server.station1YCoordinate,Double.parseDouble(Server.dataFromStation1),Server.station2XCoordinate,Server.station2YCoordinate,Double.parseDouble(Server.dataFromStation2),Server.station3XCoordinate,Server.station3YCoordinate,Double.parseDouble(Server.dataFromStation3));
+        Server.DeviceXCoordinate = cor[0];
+        Server.DeviceYCoordinate = cor[1];
     }
+
+    private double [] getLoc(double x1,double y1,double d1,double x2,double y2,double d2,double x3,double y3,double d3){
+        double hv[][]= { {x2-x1 , y2-y1},  {x3-x1, y3-y1}   } ;
+        double bv[][]={ { 0.5*( ((d1*d1)-(d2*d2)) + ((x2*x2)+(y2*y2)) - ((x1*x1)+(y1*y1)))}
+                ,{ 0.5*( ((d1*d1)-(d3*d3)) + ((x3*x3)+(y3*y3)) - ((x1*x1)+(y1*y1)))} };
+        Matrix h = new Matrix(hv);
+        Matrix b = new Matrix(bv);
+        Matrix ht = h.transpose();
+        Matrix hth = ht.times(h);
+        Matrix hthInv=hth.inverse();
+        Matrix hthInvHt = hthInv.times(ht);
+        Matrix res = hthInvHt.times(b);
+        res.print(res.getRowDimension(),res.getColumnDimension());
+        double out[]=new double [2];
+        out[0]= res.get(0,0);
+        out[1]= res.get(1,0);
+
+
+
+        return out;}
+
 }
