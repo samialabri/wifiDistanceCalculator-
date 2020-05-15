@@ -1,5 +1,5 @@
 # wifiDistanceCalculator-
-This solution was developed in JAVA. the main purpose of it is to calculate the distance of a device from a stationary Wi-Fi station. The solution is divided into a server and a client. The clients gets the readings, calculate the distance by subtitling in this equation:\
+This solution was developed in JAVA. the main purpose of it is to calculate the location of a device (x,y) inside a room. The solution is divided into a server and a client. The clients gets the readings, calculate the distance by subtitling in this equation:\
 **distance = 10 ^ ((k - (20 * log10(frequency)) + signal level)/20)**\
 the constant k needs to be calculated for every device. To do so the client first gets calibrated by placing a device 1m from the station. Then it finds the average signal level and substitute it in following equation:\ 
 **k = ((20 * (ln(distance)/ln(10))) + 20 * ln(frequency) – signal level)**\
@@ -24,7 +24,7 @@ $sudo airmon-ng start “interface name”
 ```
 5.	Then start recording the values of the Wi-Fi devices around and writing them into a csv file: 
 ```
-$sudo airodump-ng ssh -w “file name” –output-format csv “interface name + mon”
+$sudo airodump-ng -w “file name” –output-format csv “interface name + mon”
 ```
 -**Note:** if you type for example ‘b’ as a file name, the output file will be b-01.csv.\
 -**Note:** if you start the airmon-ng on interface wlan1 in step 4, the interface name will be wlan1mon.\
